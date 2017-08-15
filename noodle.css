@@ -29,8 +29,32 @@ img {
     margin: auto;
 }
 
-div.hidden > img, img.hidden {
+img.loading {
+    opacity: 0.5;
+}
+
+#loading_indicator {
+    content: '';
+    width: 4vw;
+    height: 4vw;
     display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    border-radius: 50%;
+    border: 0.75vw dotted rgba(255, 255, 255, 0.3);
+    animation: loading 3s linear infinite;
+}
+
+img.loading + #loading_indicator {
+    display: block;
+}
+
+@keyframes loading {
+    from { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+    to { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
 }
 
 #image_counter {

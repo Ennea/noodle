@@ -15,10 +15,17 @@
             <span id="current_image">#</span> / <span id="total_images">#</span>
         </div>
 
-        <div id="image_container" class="hidden">
-            <img src="path/to/first.image">
-            <img src="path/to/second.image">
-            <img src="and/so.on">
+        <div id="image_container">
+            <img id="image">
+            <div id="loading_indicator"></div>
         </div>
+
+        <script>
+            initialize_noodle([
+                'image1.png',
+                'image2.png',
+                'image3.png'
+            ]);
+        </script>
     </body>
 </html>

@@ -20,50 +20,43 @@ function preload_images() {
     let next = (noodle.current + 1) % noodle.total;
     let prev = (noodle.current + noodle.total - 1) % noodle.total;
 
-    preload_single_image(noodle.images[next].src);
-    preload_single_image(noodle.images[prev].src);
+    preload_single_image(noodle.images[next]);
+    preload_single_image(noodle.images[prev]);
 }
 
 function update_current_text() {
     document.getElementById('current_image').textContent = (noodle.current + 1).toString();
 }
 
-function next_image() {
-    noodle.images[noodle.current].classList.add('hidden');
-    noodle.current = (noodle.current + 1) % noodle.total;
-    noodle.images[noodle.current].classList.remove('hidden');
+function update_image() {
+    document.getElementById('image').classList.add('loading');
+    document.getElementById('image').src = noodle.images[noodle.current];
     update_current_text();
-    preload_images();
+}
+
+function next_image() {
+    noodle.current = (noodle.current + 1) % noodle.total;
+    update_image();
 }
 
 function previous_image() {
-    noodle.images[noodle.current].classList.add('hidden');
     noodle.current = (noodle.current + noodle.total - 1) % noodle.total;
-    noodle.images[noodle.current].classList.remove('hidden');
-    update_current_text();
-    preload_images();
+    update_image();
 }
 
-function initialize_noodle() {
-    noodle.images = document.querySelectorAll('#image_container > img');
-    noodle.total = noodle.images.length;
+function initialize_noodle(imageUrls) {
+    noodle.images = imageUrls;
+    noodle.total = imageUrls.length;
 
     document.getElementById('total_images').textContent = noodle.total.toString();
-    update_current_text();
 
-    // add the 'hidden' class to all but the current (first) image
-    for (let i = 0; i < noodle.images.length; i++) {
-        let image = noodle.images[i];
-        if (i !== noodle.current) {
-            image.classList.add('hidden');
-        }
-    }
-
-    // remove 'hidden' class from #image_container
-    document.getElementById('image_container').classList.remove('hidden');
-
-    // initial preload
-    preload_images();
+    // "preload" first image, update image and set preload to onload event
+    preload_single_image(noodle.images[noodle.current]);
+    update_image();
+    document.getElementById('image').onload = () => {
+        document.getElementById('image').classList.remove('loading');
+        preload_images();
+    };
 
     // add event listeners to navigation buttons and arrow keys
     document.getElementById('next_button').addEventListener('click', next_image);
@@ -86,9 +79,3 @@ function initialize_noodle() {
         }
     });
 }
-
-document.onreadystatechange = function() {
-    if (document.readyState === 'interactive') {
-        initialize_noodle();
-    }
-};
