@@ -1,3 +1,3 @@
 # Noodle
 
-A minimal slideshow thingy. Add images to the `#image_container` `div` in the index.html. That's it.
+A minimal slideshow thingy. Take a look at index.html to see how things work. That's it.
